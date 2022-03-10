@@ -2,8 +2,8 @@ package main
 
 import (
 	"bufio"
-	"log"
 	"os"
+	"strings"
 
 	"github.com/keepitsimpol/topten/commonword"
 	"github.com/sirupsen/logrus"
@@ -11,8 +11,11 @@ import (
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
-	log.Println("Enter text: ")
-	text, _ := reader.ReadString('.')
+	logrus.Infoln("Enter text: ")
+	text, _ := reader.ReadString('\n')
+	text = strings.Replace(text, "\n", "", 1)
+	text = strings.Replace(text, "\r", "", 1)
+
 	service := commonword.New()
 	response, err := service.GetCommonWords(text)
 	if err != nil {
