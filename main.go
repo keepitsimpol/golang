@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/keepitsimpol/topten/commonword"
+	"github.com/keepitsimpol/topten/internal/service/commonword"
 	"github.com/sirupsen/logrus"
 )
 
