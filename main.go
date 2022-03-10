@@ -9,6 +9,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+const MaxTopCommonWords = 10
+
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	logrus.Infoln("Enter text: ")
@@ -16,7 +18,7 @@ func main() {
 	text = strings.Replace(text, "\n", "", 1)
 	text = strings.Replace(text, "\r", "", 1)
 
-	service := commonword.New()
+	service := commonword.New(MaxTopCommonWords)
 	response, err := service.GetCommonWords(text)
 	if err != nil {
 		logrus.Errorf("Error in getting common words: %s", err.Error())

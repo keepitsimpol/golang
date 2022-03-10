@@ -11,10 +11,14 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type commonWordService struct{}
+type commonWordService struct {
+	maxTopCommonWords int
+}
 
-func New() *commonWordService {
-	return new(commonWordService)
+func New(maxTopCommonWords int) *commonWordService {
+	service := new(commonWordService)
+	service.maxTopCommonWords = maxTopCommonWords
+	return service
 }
 
 type CommonWordServiceResponse struct {
@@ -80,7 +84,7 @@ func (s commonWordService) determineTopTenWords(wordDictionary map[string]int) [
 
 	commonWords := make([]CommonWord, 0)
 	for _, key := range keys {
-		if len(commonWords) >= 10 {
+		if len(commonWords) >= s.maxTopCommonWords {
 			logrus.Infoln("Common words are more than ten. Updating the top ten list.")
 			keyToDelete := ""
 			for i := 0; i < len(commonWords); i++ {
@@ -96,7 +100,7 @@ func (s commonWordService) determineTopTenWords(wordDictionary map[string]int) [
 				logrus.Infof("Not adding word: %s", key)
 			}
 		}
-		if len(commonWords) < 10 {
+		if len(commonWords) < s.maxTopCommonWords {
 			logrus.Infof("Adding word: %s in our top ten", key)
 			commonWords = append(commonWords, CommonWord{word: key, occurence: wordDictionary[key]})
 		}
