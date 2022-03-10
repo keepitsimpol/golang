@@ -41,7 +41,7 @@ func (s commonWordService) GetCommonWords(text string) (CommonWordServiceRespons
 	}
 
 	s.saveWordsInDictionary(text, wordDictionary)
-	commonWords := s.determineTopTenWords(wordDictionary)
+	commonWords := s.determineTopCommonWords(wordDictionary)
 	sort.SliceStable(commonWords, func(i, j int) bool {
 		return commonWords[i].occurence > commonWords[j].occurence
 	})
@@ -74,7 +74,7 @@ func (s commonWordService) saveWordsInDictionary(text string, dictionary map[str
 	logrus.Infof("Dictionary completed: %v", dictionary)
 }
 
-func (s commonWordService) determineTopTenWords(wordDictionary map[string]int) []CommonWord {
+func (s commonWordService) determineTopCommonWords(wordDictionary map[string]int) []CommonWord {
 	logrus.Infoln("Start determining top ten words")
 	keys := make([]string, 0, len(wordDictionary))
 	for k := range wordDictionary {
